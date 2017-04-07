@@ -53,7 +53,7 @@ $(document).ready(function(){
     var type='atm';
      $.ajax({
            type       : "POST",
-           url        : "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+long+"&radius="+radius+"000&type="+type+"&key=AIzaSyCFFtyIJVFWHjUJl_GiMvBTMcrzvQank6w",
+           url        : "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+long+"&radius="+radius+"000&type="+type+"&key=your test key",
            crossDomain: true,
             dataType   : 'json',
             success    : function(response) {
