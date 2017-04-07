@@ -27,20 +27,45 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
-    },
 
+        this.receivedEvent('deviceready');
+
+         var onSuccess = function(position) {
+                 window.localStorage.setItem('long',position.coords.longitude);
+                 window.localStorage.setItem('lat',position.coords.latitude);
+            };
+            function onError(error) {
+                alert('code: '    + error.code    + '\n' +
+                    'message: ' + error.message + '\n');
+            }
+         navigator.geolocation.getCurrentPosition(onSuccess, onError);
+     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
     }
 };
 
+$(document).ready(function(){
+    var lat=window.localStorage.getItem('lat');
+    var long=window.localStorage.getItem('long');
+    var radius=1;
+    var type='atm';
+     $.ajax({
+           type       : "POST",
+           url        : "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+long+"&radius="+radius+"000&type="+type+"&key=AIzaSyCFFtyIJVFWHjUJl_GiMvBTMcrzvQank6w",
+           crossDomain: true,
+            dataType   : 'json',
+            success    : function(response) {
+            $.each( response.results, function( key, value ) {
+                        $('.content').append('<li>'+value.name +''+'</li>');
+            });
+
+            },
+            error: function() {
+             alert('Something went wrong :(');
+             }
+            });
+        })
 app.initialize();
+
